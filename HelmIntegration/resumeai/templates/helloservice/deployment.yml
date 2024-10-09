@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helloservice-depl
+spec:
+  replicas: {{ .Values.replicaCount }}  # Use the value from values.yaml for replica count
+  selector:
+    matchLabels:
+      app: helloservice
+  template:
+    metadata:
+      labels:
+        app: helloservice
+    spec:
+      containers:
+        - name: helloservice
+          image: "{{ .Values.helloservice.image.repository }}:{{ .Values.helloservice.image.tag }}"  # Include the image tag
+          ports:
+            - containerPort: {{ .Values.helloservice.service.port }}  # Use the correct path for the port

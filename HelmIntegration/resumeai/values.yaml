@@ -1,0 +1,106 @@
+# Default values for resumeai.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+mongodb:
+  image:
+    repository: mongo
+    tag: latest
+  replicaCount: 1
+  rootUser: admin  # Replace with your desired username
+  rootPassword: p1assword  # Replace with your desired password
+
+
+profileservice:
+  image:
+    repository: 975050024946.dkr.ecr.ap-northeast-2.amazonaws.com/microprofile  # Corrected the key name from 'repoistory' to 'repository'
+    tag: latest
+  service:
+    type: LoadBalancer
+    port: 3002
+
+helloservice:
+  image:
+    repository: 975050024946.dkr.ecr.ap-northeast-2.amazonaws.com/microhello
+    tag: latest
+  service:
+    type: LoadBalancer
+    port: 3001
+
+frontend:
+  image:
+    repository: 975050024946.dkr.ecr.ap-northeast-2.amazonaws.com/microfrontend
+    tag: latest
+  service:
+    type: LoadBalancer
+    port: 3000
+
+# Replica count for the deployments
+replicaCount: 1
+
+# This sets the default image repository for nginx if not overridden
+image:
+  repository: nginx
+  pullPolicy: IfNotPresent
+  tag: ""
+
+# Secrets for pulling images from private repositories
+imagePullSecrets: []
+
+# Overrides for chart naming
+nameOverride: ""
+fullnameOverride: ""
+
+# Service account configuration
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  name: ""
+
+# Annotations and labels for the pods
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext: {}
+
+securityContext: {}
+
+# Default service configuration
+service:
+  type: ClusterIP
+  port: 80
+
+# Ingress configuration
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+
+# Resource limits and requests
+resources: {}
+
+# Liveness and readiness probes
+livenessProbe:
+  httpGet:
+    path: /
+    port: http
+readinessProbe:
+  httpGet:
+    path: /
+    port: http
+
+# Autoscaling configuration
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # Uncomment to enable memory-based scaling
+  # targetMemoryUtilizationPercentage: 80

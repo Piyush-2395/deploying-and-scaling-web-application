@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  helloservice:
+    container_name: helloservice
+    build:
+      context: helloService/
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+  
+  profileservice:
+    container_name: profileservice
+    build:
+      context: profileService/
+      dockerfile: Dockerfile
+    ports:
+      - "3002:3002"
+      

@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: profileservice-depl  # Fixed the typo in the name
+spec:
+  replicas: {{ .Values.replicaCount }}  # Use the value from values.yaml for replica count
+  selector:
+    matchLabels:
+      app: profileservice
+  template:
+    metadata:
+      labels:
+        app: profileservice
+    spec:
+      containers:
+        - name: profileservice
+          image: "{{ .Values.profileservice.image.repository }}:{{ .Values.profileservice.image.tag }}"  # Corrected the image reference
+          ports:
+            - containerPort: {{ .Values.profileservice.service.port }}  # Use the correct path for the port

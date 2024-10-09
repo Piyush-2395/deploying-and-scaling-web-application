@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-depl
+spec:
+  replicas: {{ .Values.mongodb.replicaCount }}  # Use a value from values.yaml
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      containers:
+        - name: mongodb
+          image: "{{ .Values.mongodb.image.repository }}:{{ .Values.mongodb.image.tag }}"  # Reference image from values.yaml
+          ports:
+            - containerPort: 27017  # Default MongoDB port
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              value: {{ .Values.mongodb.rootUser }}  # Root username
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              value: {{ .Values.mongodb.rootPassword }}  # Root password
+          volumeMounts:
+            - name: mongodb-storage
+              mountPath: /data/db  # Path where MongoDB stores its data
+      volumes:
+        - name: mongodb-storage
+          persistentVolumeClaim:
+            claimName: mongodb-pvc  # Reference to the PVC
